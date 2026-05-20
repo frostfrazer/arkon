@@ -1,0 +1,23 @@
+[package]
+name    = "arkon-tests"
+version.workspace = true
+edition.workspace = true
+
+# This crate is test-only — never published
+publish = false
+
+[dev-dependencies]
+arkon-core      = { path = "../arkon-core" }
+arkon-detector  = { path = "../arkon-detector" }
+arkon-adapters  = { path = "../arkon-adapters" }
+arkon-targets   = { path = "../arkon-targets" }
+arkon-secrets   = { path = "../arkon-secrets" }
+arkon-store     = { path = "../arkon-store" }
+arkon-daemon    = { path = "../arkon-daemon" }
+arkon-p2p       = { path = "../arkon-p2p" }
+anyhow.workspace     = true
+serde_json.workspace = true
+tempfile.workspace   = true
+uuid.workspace       = true
+dirs.workspace       = true
+tokio.workspace      = true

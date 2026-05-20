@@ -1,0 +1,8 @@
+/target
+**/*.rs.bk
+Cargo.lock          # Only for binaries — libraries should not commit lockfiles
+.env
+.env.*
+*.vault
+*.vault.tmp
+.arkon/

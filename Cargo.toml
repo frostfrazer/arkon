@@ -1,0 +1,145 @@
+[workspace]
+resolver = "2"
+members = [
+    "crates/arkon-core",
+    "crates/arkon-detector",
+    "crates/arkon-adapters",
+    "crates/arkon-targets",
+    "crates/arkon-secrets",
+    "crates/arkon-store",
+    "crates/arkon-p2p",
+    "crates/arkon-daemon",
+    "crates/arkon-cli",
+    "crates/arkon-tests",
+    "crates/arkon-gui/src-tauri",
+]
+
+[workspace.package]
+version     = "1.0.1"
+edition     = "2021"
+authors     = ["ARKON Contributors"]
+license     = "MIT OR Apache-2.0"
+repository  = "https://github.com/arkon-sh/arkon"
+rust-version = "1.75"
+
+[workspace.dependencies]
+# async runtime
+tokio        = { version = "1", features = ["full"] }
+tokio-util   = { version = "0.7" }
+
+# error handling
+anyhow       = "1"
+thiserror    = "1"
+
+# serialization
+serde        = { version = "1", features = ["derive"] }
+serde_json   = "1"
+toml         = "0.8"
+
+# CLI
+clap         = { version = "4", features = ["derive", "color", "env"] }
+console      = "0.15"
+indicatif    = "0.17"
+dialoguer    = "0.11"
+colored      = "2"
+
+# filesystem
+walkdir      = "2"
+bytes        = "1"
+pem          = "3"
+ignore       = "0.4"
+tempfile     = "3"
+sha2         = "0.10"
+hex          = "0.4"
+
+# networking
+reqwest      = { version = "0.11", features = ["json", "stream"] }
+ssh2         = "0.9"
+aws-sdk-s3   = "1"
+aws-config   = "1"
+
+# crypto (secrets vault)
+aes-gcm      = "0.10"
+argon2       = "0.5"
+rand         = "0.8"
+zeroize      = { version = "1", features = ["derive"] }
+
+# config
+dirs         = "5"
+chrono       = { version = "0.4", features = ["serde"] }
+uuid         = { version = "1", features = ["v4", "serde"] }
+
+# logging / tracing
+tracing      = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter"] }
+
+# IPC / daemon
+nix          = { version = "0.27", features = ["signal", "process"] }
+
+# git (adapter install)
+git2         = { version = "0.18", default-features = false }
+
+# process management
+sysinfo      = "0.30"
+
+# P2P / networking
+base64       = "0.21"
+url          = "2"
+
+# Real Ed25519 signing
+ed25519-dalek = { version = "2", features = ["rand_core"] }
+
+# Real FS events (adapter hot-reload)
+notify       = { version = "6", default-features = false, features = ["macos_kqueue"] }
+
+# Torrent
+lava_torrent = "0.8"
+
+# Template rendering (download page)
+minijinja    = "1"
+
+# ACME / Let's Encrypt
+instant-acme = "0.4"
+
+# x509 certificate parsing for ACME renewal
+x509-parser  = "0.15"
+
+# AWS SigV4 request signing (CloudFront invalidation)
+aws-sigv4    = "1"
+aws-credential-types = "1"
+
+# Docker
+bollard      = "0.16"
+
+# HTTP date formatting (RFC 7231)
+httpdate     = "1"
+
+# libp2p DHT (Kademlia) for peer discovery — pin to 0.53.x (stable as of 2024)
+# Features: kad=Kademlia DHT, identify=peer exchange, noise=encryption,
+#           tcp=transport, yamux=multiplexing, dns=name resolution
+libp2p       = { version = "0.53", features = [
+    "kad", "identify", "noise", "tcp", "yamux", "dns",
+    "macros", "tokio"
+] }
+
+# mDNS for LAN/WiFi game discovery
+mdns-sd      = "0.9"
+
+# IPFS HTTP client (kubo RPC)
+ipfs-api-backend-hyper = { version = "0.6", features = ["with-builder"] }
+
+# OS keychain session caching
+keyring      = "2"
+
+# BIP39 recovery mnemonics  
+bip39        = "2"
+
+# base64 encoding (const-time)
+base64ct     = { version = "1", features = ["alloc"] }
+
+[profile.release]
+opt-level   = 3
+lto         = true
+codegen-units = 1
+strip       = true
+panic       = "abort"

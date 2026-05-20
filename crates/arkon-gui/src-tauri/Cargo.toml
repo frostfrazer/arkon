@@ -1,0 +1,34 @@
+[package]
+name    = "arkon-gui"
+version.workspace = true
+edition.workspace = true
+
+[lib]
+name = "arkon_gui_lib"
+crate-type = ["staticlib", "cdylib", "rlib"]
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+arkon-core      = { path = "../../arkon-core" }
+arkon-detector  = { path = "../../arkon-detector" }
+arkon-adapters  = { path = "../../arkon-adapters" }
+arkon-targets   = { path = "../../arkon-targets" }
+arkon-secrets   = { path = "../../arkon-secrets" }
+arkon-store     = { path = "../../arkon-store" }
+arkon-daemon    = { path = "../../arkon-daemon" }
+
+tauri           = { version = "2", features = ["tray-icon"] }
+tauri-plugin-shell      = "2"
+tauri-plugin-notification = "2"
+tauri-plugin-dialog     = "2"
+serde.workspace         = true
+serde_json.workspace    = true
+tokio.workspace         = true
+tracing.workspace       = true
+tracing-subscriber.workspace = true
+anyhow.workspace        = true
+dirs.workspace          = true
+url.workspace           = true
+chrono.workspace        = true

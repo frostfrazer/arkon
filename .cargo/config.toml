@@ -1,0 +1,35 @@
+# ARKON .cargo/config.toml
+# Cross-compilation targets and build optimizations
+
+[build]
+# Parallel codegen units for faster incremental builds in dev
+# (overridden to 1 in Cargo.toml [profile.release] for maximum optimization)
+
+[target.x86_64-unknown-linux-musl]
+# Static musl binary — zero runtime deps, runs on any Linux
+linker = "x86_64-linux-musl-gcc"
+rustflags = ["-C", "target-feature=+crt-static"]
+
+[target.aarch64-unknown-linux-musl]
+linker = "aarch64-linux-musl-gcc"
+rustflags = ["-C", "target-feature=+crt-static"]
+
+[target.x86_64-apple-darwin]
+rustflags = ["-C", "link-arg=-undefined", "-C", "link-arg=dynamic_lookup"]
+
+[target.aarch64-apple-darwin]
+rustflags = ["-C", "link-arg=-undefined", "-C", "link-arg=dynamic_lookup"]
+
+[target.x86_64-pc-windows-msvc]
+rustflags = ["-C", "target-feature=+crt-static"]
+
+# ── Registry mirrors (uncomment if behind a firewall) ─────────────────────────
+# [source.crates-io]
+# replace-with = "mirror"
+# [source.mirror]
+# registry = "https://your-mirror.example.com/registry"
+
+# ── Net ───────────────────────────────────────────────────────────────────────
+[net]
+retry = 3
+git-fetch-with-cli = true   # use system git for better SSH key support
