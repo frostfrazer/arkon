@@ -26,6 +26,7 @@ import (
 	"log"
 	"net/http"
 	"net/url"
+	"os"
 	"sync"
 	"time"
 )
@@ -222,8 +223,17 @@ func main() {
 	baseURL := flag.String("base-url", "", "public base URL (e.g. https://relay.arkon.sh)")
 	flag.Parse()
 
+	// Render (and most PaaS) injects PORT env var — honour it
+	if envPort := os.Getenv("PORT"); envPort != "" {
+		fmt.Sscanf(envPort, "%d", port)
+	}
+
 	if *baseURL == "" {
-		*baseURL = fmt.Sprintf("http://localhost:%d", *port)
+		if envURL := os.Getenv("BASE_URL"); envURL != "" {
+			*baseURL = envURL
+		} else {
+			*baseURL = fmt.Sprintf("http://localhost:%d", *port)
+		}
 	}
 
 	registry := NewRegistry()
