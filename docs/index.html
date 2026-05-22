@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Arkon — Deploy anything, anywhere</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0d0f14;
+      --surface:  #161920;
+      --border:   #252830;
+      --accent:   #6366f1;
+      --accent2:  #8b5cf6;
+      --text:     #e2e4f0;
+      --muted:    #7c8099;
+      --green:    #22c55e;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      line-height: 1.6;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.25rem 2rem;
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 10;
+    }
+
+    .logo {
+      font-size: 1.25rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: -0.02em;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 2rem;
+    }
+
+    nav ul a {
+      color: var(--muted);
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    nav ul a:hover { color: var(--text); text-decoration: none; }
+
+    .nav-cta {
+      background: var(--accent);
+      color: #fff !important;
+      padding: 0.45rem 1.1rem;
+      border-radius: 6px;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+
+    .nav-cta:hover { opacity: 0.85; text-decoration: none !important; }
+
+    /* ── HERO ── */
+    .hero {
+      text-align: center;
+      padding: 6rem 1.5rem 4rem;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .badge {
+      display: inline-block;
+      background: #1e2130;
+      border: 1px solid var(--border);
+      color: var(--accent);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 0.3rem 0.9rem;
+      border-radius: 999px;
+      margin-bottom: 1.5rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      font-size: clamp(2.2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+    }
+
+    h1 span {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .subtitle {
+      font-size: 1.15rem;
+      color: var(--muted);
+      max-width: 520px;
+      margin: 0 auto 2.5rem;
+    }
+
+    .cta-group {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 3rem;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      padding: 0.75rem 1.75rem;
+      border-radius: 8px;
+      font-weight: 700;
+      font-size: 1rem;
+      transition: opacity 0.2s, transform 0.1s;
+    }
+
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); text-decoration: none; }
+
+    .btn-secondary {
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 0.75rem 1.75rem;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: border-color 0.2s;
+    }
+
+    .btn-secondary:hover { border-color: var(--accent); text-decoration: none; }
+
+    /* ── INSTALL BOX ── */
+    .install-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.5rem;
+      display: inline-flex;
+      align-items: center;
+      gap: 1rem;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.9rem;
+      color: var(--text);
+      margin-bottom: 0.75rem;
+    }
+
+    .install-box .prompt { color: var(--accent); }
+
+    .copy-btn {
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      padding: 0.25rem 0.6rem;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      transition: all 0.2s;
+    }
+
+    .copy-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    .install-note {
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+
+    /* ── FEATURES ── */
+    .section {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 4rem 1.5rem;
+    }
+
+    .section-label {
+      text-align: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.75rem;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.75rem;
+    }
+
+    .section-sub {
+      text-align: center;
+      color: var(--muted);
+      margin-bottom: 3rem;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: border-color 0.2s;
+    }
+
+    .card:hover { border-color: var(--accent); }
+
+    .card-icon {
+      font-size: 1.75rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .card h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .card p {
+      font-size: 0.88rem;
+      color: var(--muted);
+      line-height: 1.55;
+    }
+
+    /* ── HOW IT WORKS ── */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1.5rem;
+      counter-reset: steps;
+    }
+
+    .step {
+      text-align: center;
+      counter-increment: steps;
+    }
+
+    .step-num {
+      width: 2.5rem;
+      height: 2.5rem;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), var(--accent2));
+      color: #fff;
+      font-weight: 800;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 1rem;
+    }
+
+    .step h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 0.4rem; }
+    .step p  { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── CODE DEMO ── */
+    .demo {
+      background: #0a0c10;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .demo-bar {
+      background: var(--surface);
+      padding: 0.6rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .dot { width: 12px; height: 12px; border-radius: 50%; }
+    .dot-r { background: #ff5f57; }
+    .dot-y { background: #ffbd2e; }
+    .dot-g { background: #28c840; }
+
+    .demo-title { font-size: 0.78rem; color: var(--muted); margin-left: auto; margin-right: auto; }
+
+    .demo-body {
+      padding: 1.5rem;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 0.82rem;
+      line-height: 1.8;
+    }
+
+    .c-prompt { color: var(--accent); }
+    .c-cmd    { color: #e2e4f0; }
+    .c-ok     { color: var(--green); }
+    .c-info   { color: var(--muted); }
+    .c-url    { color: #38bdf8; }
+
+    /* ── RELAY STATUS ── */
+    .relay-status {
+      text-align: center;
+      padding: 2rem 1.5rem;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      margin: 0 0 2rem;
+    }
+
+    .status-dot {
+      display: inline-block;
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--green);
+      margin-right: 0.4rem;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.4; }
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      text-align: center;
+      padding: 2.5rem 1.5rem;
+      color: var(--muted);
+      font-size: 0.85rem;
+      border-top: 1px solid var(--border);
+    }
+
+    footer a { color: var(--muted); }
+    footer a:hover { color: var(--text); }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="logo">arkon</span>
+  <ul>
+    <li><a href="#features">Features</a></li>
+    <li><a href="#how">How it works</a></li>
+    <li><a href="https://github.com/frostfrazer/arkon">GitHub</a></li>
+    <li><a href="https://github.com/frostfrazer/arkon" class="nav-cta">Get Started</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="badge">Open Source · v1.0.1</div>
+  <h1>Deploy anything,<br><span>anywhere.</span></h1>
+  <p class="subtitle">
+    One command to build and ship your project — to your own server, S3, IPFS,
+    GitHub Pages, Docker, or BitTorrent. No vendor lock-in. No YAML hell.
+  </p>
+
+  <div class="cta-group">
+    <a href="https://github.com/frostfrazer/arkon" class="btn-primary">View on GitHub</a>
+    <a href="#how" class="btn-secondary">See how it works</a>
+  </div>
+
+  <div class="install-box">
+    <span class="prompt">$</span>
+    <span id="install-cmd">curl -fsSL https://raw.githubusercontent.com/frostfrazer/arkon/main/install.sh | sh</span>
+    <button class="copy-btn" onclick="copyInstall()">Copy</button>
+  </div>
+  <div class="install-note">Linux &amp; macOS · Windows: <code>cargo install --git https://github.com/frostfrazer/arkon arkon-cli</code></div>
+</section>
+
+<!-- RELAY STATUS -->
+<div class="relay-status">
+  <span class="status-dot"></span>
+  <span id="relay-status-text">Checking relay status...</span>
+  &nbsp;·&nbsp;
+  <a href="https://arkon-relay.onrender.com/health" target="_blank">arkon-relay.onrender.com</a>
+</div>
+
+<!-- FEATURES -->
+<section class="section" id="features">
+  <div class="section-label">Features</div>
+  <h2 class="section-title">Everything you need to ship</h2>
+  <p class="section-sub">Built for indie developers and small teams who want full control.</p>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-icon">🔍</div>
+      <h3>Auto-detection</h3>
+      <p>Arkon detects your project type automatically — Next.js, Rust, Python, Go, Unity, Docker, and more.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🚀</div>
+      <h3>Deploy anywhere</h3>
+      <p>SSH servers, AWS S3, Cloudflare R2, Backblaze B2, GitHub Pages, IPFS, BitTorrent, Docker registries.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔗</div>
+      <h3>Instant preview links</h3>
+      <p>Share a live preview URL with anyone in seconds — no server required, powered by P2P WebRTC.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔐</div>
+      <h3>Encrypted secrets vault</h3>
+      <p>Store API keys and deploy credentials locally, encrypted, with BIP39 mnemonic recovery.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">⏪</div>
+      <h3>Rollback in one command</h3>
+      <p>Every deploy saves a snapshot. Roll back to any previous version instantly.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🛡️</div>
+      <h3>Audit log</h3>
+      <p>Tamper-evident HMAC chain of every deploy — know exactly what shipped, when, and by whom.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🖥️</div>
+      <h3>Desktop GUI</h3>
+      <p>Native desktop app built with Tauri — not Electron. Fast, lightweight, cross-platform.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🧩</div>
+      <h3>Community adapters</h3>
+      <p>Install adapters from Git repos to add support for any project type without touching core.</p>
+    </div>
+    <div class="card">
+      <div class="card-icon">🔒</div>
+      <h3>Auto TLS</h3>
+      <p>Automatic Let's Encrypt certificates via ACME when deploying to SSH targets. Zero config.</p>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="section" id="how" style="padding-top: 0;">
+  <div class="section-label">How it works</div>
+  <h2 class="section-title">Ship in 3 steps</h2>
+  <p class="section-sub">From zero to deployed in under a minute.</p>
+
+  <div class="steps" style="margin-bottom: 3rem;">
+    <div class="step">
+      <div class="step-num">1</div>
+      <h3>Install</h3>
+      <p>One curl command installs arkon and configures the relay.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <h3>Init</h3>
+      <p>Run <code>arkon init</code> in your project. Arkon detects everything and writes arkon.toml.</p>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <h3>Ship</h3>
+      <p>Run <code>arkon ship</code>. Arkon builds, deploys, and gives you a live URL.</p>
+    </div>
+  </div>
+
+  <!-- DEMO -->
+  <div class="demo">
+    <div class="demo-bar">
+      <div class="dot dot-r"></div>
+      <div class="dot dot-y"></div>
+      <div class="dot dot-g"></div>
+      <span class="demo-title">terminal</span>
+    </div>
+    <div class="demo-body">
+      <div><span class="c-prompt">$</span> <span class="c-cmd">arkon init</span></div>
+      <div><span class="c-ok">✓</span> <span class="c-info">detected: Next.js 14</span></div>
+      <div><span class="c-ok">✓</span> <span class="c-info">wrote arkon.toml</span></div>
+      <br>
+      <div><span class="c-prompt">$</span> <span class="c-cmd">arkon ship --target s3</span></div>
+      <div><span class="c-info">  building artifact...</span></div>
+      <div><span class="c-info">  uploading 47 files...</span></div>
+      <div><span class="c-ok">✓</span> <span class="c-info">deployed in 12s</span></div>
+      <div><span class="c-url">  → https://myblog.s3-website.amazonaws.com</span></div>
+      <br>
+      <div><span class="c-prompt">$</span> <span class="c-cmd">arkon preview</span></div>
+      <div><span class="c-ok">✓</span> <span class="c-info">preview link ready</span></div>
+      <div><span class="c-url">  → https://arkon-relay.onrender.com/p/abc123</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p style="margin-bottom: 0.5rem;">
+    <strong style="color: var(--text);">arkon</strong> is open source and free to use.
+  </p>
+  <p>
+    <a href="https://github.com/frostfrazer/arkon">GitHub</a> ·
+    <a href="https://github.com/frostfrazer/arkon/blob/main/LICENSE-MIT">MIT License</a> ·
+    Built by <a href="https://github.com/frostfrazer">frostfrazer</a>
+  </p>
+</footer>
+
+<script>
+  // Copy install command
+  function copyInstall() {
+    const cmd = document.getElementById('install-cmd').textContent;
+    navigator.clipboard.writeText(cmd).then(() => {
+      const btn = document.querySelector('.copy-btn');
+      btn.textContent = 'Copied!';
+      setTimeout(() => btn.textContent = 'Copy', 2000);
+    });
+  }
+
+  // Check relay health
+  fetch('https://arkon-relay.onrender.com/health')
+    .then(r => r.json())
+    .then(d => {
+      document.getElementById('relay-status-text').textContent =
+        d.ok ? `Relay online · ${d.peers} active peers` : 'Relay degraded';
+    })
+    .catch(() => {
+      document.getElementById('relay-status-text').textContent = 'Relay status unknown';
+    });
+</script>
+</body>
+</html>
